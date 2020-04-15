@@ -11,9 +11,49 @@
                 <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>{% endif %}</div>
         </div>
         <h2 class="article-title">{{ object.title }}</h2>
-        {% if post.image %}<br>
-        <img src="{{post.image.url}}" width="90%" height="300px"> <br><br>{% endif %}
+        {% if object.image %}<br>
+        <img src="{{object.image.url}}" width="90%" height="300px"> <br><br>{% endif %}
         <p class="article-content">{{ object.content }}</p>
+        {% if liked %}
+            <i class='icons fas fa-thumbs-up' id="like_{{object.id}}" onclick="handle_like('{{object.id}}','{{request.user.id}}')" style='font-size:23px;color:blue;'></i>
+        {% else %}
+            <i class='icons far fa-thumbs-up' id="like_{{object.id}}" onclick="handle_like('{{object.id}}','{{request.user.id}}')" style='font-size:23px'></i>
+        {% endif %}
+
+        <p class="article-content" id="likeCount_{{object.id}}">Likes : {{object.likes.count}}</p>
     </div>
 </article>
+<script>
+        function handle_like(post_id,user_id){
+            $.ajax({
+                url: '/ajax/handle-like/',
+                type: "GET",
+                data: {
+                    'post_id' : post_id,
+                    'user_id' : user_id
+                },
+                dataType: 'json',
+                success: function (data) {
+                if (data.like) {
+                    $("#like_"+post_id).removeClass("far");
+                    $("#like_"+post_id).addClass("fas");
+                    $("#like_"+post_id).css("color","blue");
+                    likes = $("#likeCount_"+post_id).text();
+                    likes = likes.slice(7);
+                    likes = parseInt(likes)+1;
+                    $("#likeCount_"+post_id).text("Likes : "+ likes);
+                }
+                else{
+                    $("#like_"+post_id).removeClass("fas");
+                    $("#like_"+post_id).addClass("far");
+                    $("#like_"+post_id).css("color","black");
+                    likes = $("#likeCount_"+post_id).text();
+                    likes = likes.slice(7);
+                    likes = parseInt(likes)-1;
+                    $("#likeCount_"+post_id).text("Likes : "+ likes);
+                }
+            }
+            });
+        }
+    </script>
 {% endblock content %}

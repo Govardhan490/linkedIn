@@ -1,11 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from PIL import Image
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    connections = models.ManyToManyField('self',symmetrical=False,blank=True)
+    job = models.TextField(blank=True,null=True)
+    education = models.TextField(blank=True,null=True)
+    projects = models.TextField(blank=True,null=True)
+    skills = models.TextField(blank=True,null=True)
+    internships = models.TextField(blank=True,null=True)
+    links = models.TextField(blank=True,null=True)
+
 
     def __str__(self):
         return f'{self.user.username} Profile'

@@ -19,5 +19,18 @@
     </form>
 </div>
 
+<script>
+    $(function() {
+        for(var i=1;i<=6;i++)
+        {
+            if($("#"+i).val() != '')
+            {
+                var lines = $("#"+i).val().split("\n");
+                $("#"+i).attr('rows',lines.length);
+            }
+        }
+        $('textarea').autoResize();
+    });
+</script>
 
 {% endblock content %}
