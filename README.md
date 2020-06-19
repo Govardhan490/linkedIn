@@ -1,2 +1,1 @@
-# linkedIn
-"# linkedin" 
+A simple website made using DJango and PostgreSQL where you can post your photos and write simple blogs and see the posts by other people using the same, One can follow and unfollow users and give likes to other peoples post edit your posts, share your professional details with others etc.
